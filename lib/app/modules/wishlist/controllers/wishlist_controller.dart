@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import '../../../core/services/wishlist_service.dart';
+import '../../../core/storage/storage_service.dart';
 import '../../../data/models/wishlist_model.dart';
 import '../../../data/providers/wishlist_provider.dart';
 
@@ -27,6 +28,10 @@ class WishlistController extends GetxController {
     isLoading.value = true;
     errorMessage.value = '';
     try {
+      if (!StorageService.to.isLoggedIn) {
+        wishlistItems.clear();
+        return;
+      }
       final items = await _provider.getWishlist();
       wishlistItems.assignAll(items);
     } catch (e) {
