@@ -1,0 +1,24 @@
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # Code Quality
+    avoid_print: true
+    prefer_const_constructors: true
+    prefer_const_declarations: true
+    prefer_single_quotes: true
+    unnecessary_this: true
+    avoid_redundant_argument_values: true
+    require_trailing_commas: true
+    # Performance
+    avoid_unnecessary_containers: true
+    use_key_in_widget_constructors: false
+
+analyzer:
+  errors:
+    # Treat unused imports as warnings (not errors)
+    unused_import: warning
+    dead_code: warning
+  exclude:
+    - build/**
+    - '**/*.g.dart'
