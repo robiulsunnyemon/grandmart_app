@@ -48,4 +48,11 @@ class ApiConfig {
   static const String wishlist       = '/wishlist';
   static const String wishlistIds    = '/wishlist/ids';
   static String wishlistToggle(int productId) => '/wishlist/$productId';
+
+  // ── Cart Endpoints ───────────────────────────────────────────────────────
+  static const String cart           = '/cart';
+  static const String cartItems      = '/cart/items';
+  static const String cartMerge      = '/cart/merge';
+  static const String cartClear      = '/cart/clear';
+  static String cartItemDetail(int id) => '/cart/items/$id';
 }

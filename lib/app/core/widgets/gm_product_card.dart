@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../config/app_config.dart';
+import '../services/cart_service.dart';
 import '../services/wishlist_service.dart';
 import '../storage/storage_service.dart';
 import '../../data/models/product_model.dart';
@@ -198,26 +199,53 @@ class GMProductCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 6),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        '${AppConfig.currencySymbol}${product.effectivePrice.toStringAsFixed(0)}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: R.sp(15),
-                          color: theme.primaryColor,
+                      Flexible(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            FittedBox(
+                              fit: BoxFit.scaleDown,
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                '${AppConfig.currencySymbol}${product.effectivePrice.toStringAsFixed(0)}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: R.sp(15),
+                                  color: theme.primaryColor,
+                                ),
+                              ),
+                            ),
+                            if (product.hasDiscount)
+                              Text(
+                                '${AppConfig.currencySymbol}${product.originalPrice.toStringAsFixed(0)}',
+                                style: TextStyle(
+                                  decoration: TextDecoration.lineThrough,
+                                  color: Colors.grey,
+                                  fontSize: R.sp(12),
+                                ),
+                              ),
+                          ],
                         ),
                       ),
-                      if (product.hasDiscount) ...[
-                        const SizedBox(width: 6),
-                        Text(
-                          '${AppConfig.currencySymbol}${product.originalPrice.toStringAsFixed(0)}',
-                          style: TextStyle(
-                            decoration: TextDecoration.lineThrough,
-                            color: Colors.grey,
-                            fontSize: R.sp(12),
+                      GestureDetector(
+                        onTap: () {
+                          CartService.to.addToCart(product);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: theme.primaryColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Icon(
+                            Icons.add_shopping_cart,
+                            color: Colors.white,
+                            size: 16,
                           ),
                         ),
-                      ],
+                      ),
                     ],
                   ),
                 ],

@@ -57,6 +57,11 @@ class StorageService extends GetxService {
   bool get isOnboardingSeen => _box.read<bool>(_keyOnboardingSeen) ?? false;
   Future<void> setOnboardingSeen() => _box.write(_keyOnboardingSeen, true);
 
+  // ── Generic Key/Value Helper ─────────────────────────────────────────────
+  T? read<T>(String key) => _box.read<T>(key);
+  Future<void> write(String key, dynamic value) => _box.write(key, value);
+  Future<void> remove(String key) => _box.remove(key);
+
   // ── User Data Cache ──────────────────────────────────────────────────────
   Map<String, dynamic>? getUserData() => _box.read<Map<String, dynamic>>(_keyUserData);
   Future<void> saveUserData(Map<String, dynamic> json) => _box.write(_keyUserData, json);
