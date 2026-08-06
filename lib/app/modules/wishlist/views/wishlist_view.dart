@@ -13,8 +13,12 @@ import '../controllers/wishlist_controller.dart';
 //  GRANDMART — Wishlist View
 // ════════════════════════════════════════════════════════════════════════════
 
-class WishlistView extends GetView<WishlistController> {
+class WishlistView extends StatelessWidget {
   const WishlistView({super.key});
+
+  WishlistController get controller => Get.isRegistered<WishlistController>()
+      ? Get.find<WishlistController>()
+      : Get.put(WishlistController());
 
   @override
   Widget build(BuildContext context) {
@@ -255,7 +259,9 @@ class _WishlistCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   if (price != null)
-                    Row(
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      spacing: 4,
                       children: [
                         Text(
                           '${AppConfig.currencySymbol}${(discountPrice ?? price)!.toStringAsFixed(0)}',
@@ -264,8 +270,7 @@ class _WishlistCard extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        if (discountPrice != null) ...[
-                          const SizedBox(width: 4),
+                        if (discountPrice != null)
                           Text(
                             '${AppConfig.currencySymbol}${price!.toStringAsFixed(0)}',
                             style: theme.textTheme.bodySmall?.copyWith(
@@ -273,7 +278,6 @@ class _WishlistCard extends StatelessWidget {
                               color: theme.colorScheme.outline,
                             ),
                           ),
-                        ],
                       ],
                     ),
                 ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../../core/services/cart_service.dart';
+import '../../../../core/services/wishlist_service.dart';
 import '../../../../core/storage/storage_service.dart';
 import '../../../../data/providers/auth_provider.dart';
 import '../../../../routes/app_pages.dart';
@@ -29,11 +31,16 @@ class LoginController extends GetxController {
     try {
       isLoading.value = true;
       final tokenModel = await _authProvider.login(email: email, password: password);
+
       await StorageService.to.saveTokens(
         access: tokenModel.accessToken,
         refresh: tokenModel.refreshToken,
       );
       await StorageService.to.saveUserData(tokenModel.user.toJson());
+
+      // Sync Wishlist and Cart upon login
+      WishlistService.to.fetchIds();
+      CartService.to.mergeGuestCartOnLogin();
 
       Get.offAllNamed(Routes.MAIN_WRAPPER);
     } catch (e) {

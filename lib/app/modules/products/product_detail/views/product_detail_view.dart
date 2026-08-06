@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../../core/config/app_config.dart';
 import '../../../../core/responsive/responsive_helper.dart';
+import '../../../../core/services/cart_service.dart';
 import '../../../../core/services/wishlist_service.dart';
 import '../../../../core/storage/storage_service.dart';
 import '../../../../core/widgets/gm_button.dart';
@@ -200,7 +201,11 @@ class ProductDetailView extends GetView<ProductDetailController> {
                   text: 'Add to Cart',
                   icon: Icons.add_shopping_cart_rounded,
                   onPressed: () {
-                    Get.snackbar('Cart', 'Cart management will be enabled in the next phase!', snackPosition: SnackPosition.BOTTOM);
+                    final p = controller.product.value!;
+                    final selectedVariant = p.variants.isNotEmpty && controller.selectedVariantIndex.value < p.variants.length
+                        ? p.variants[controller.selectedVariantIndex.value]
+                        : null;
+                    CartService.to.addToCart(p, variant: selectedVariant);
                   },
                 ),
               ),

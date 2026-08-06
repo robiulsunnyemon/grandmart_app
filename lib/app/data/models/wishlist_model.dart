@@ -2,6 +2,12 @@
 //  GRANDMART — Wishlist Models
 // ════════════════════════════════════════════════════════════════════════════
 
+double? _parseNullableDouble(dynamic val) {
+  if (val == null) return null;
+  if (val is num) return val.toDouble();
+  return double.tryParse(val.toString());
+}
+
 /// Embedded product summary inside a wishlist item.
 class WishlistProductSummary {
   final int id;
@@ -28,8 +34,8 @@ class WishlistProductSummary {
       title: json['title'] ?? '',
       slug: json['slug'] ?? '',
       thumbnail: json['thumbnail'],
-      price: (json['price'] as num?)?.toDouble(),
-      discountPrice: (json['discount_price'] as num?)?.toDouble(),
+      price: _parseNullableDouble(json['price']),
+      discountPrice: _parseNullableDouble(json['discount_price']),
       isFeatured: json['is_featured'] ?? false,
     );
   }

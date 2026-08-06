@@ -63,4 +63,5 @@ class AppConfig {
   static const bool showFeaturedBanner = true;
   static const bool enableGuestMode    = true; // Browse without login
   static const bool showWishlistTab    = true; // Show Wishlist in bottom nav
+  static const bool showCartTab        = true; // Show Cart in bottom nav
 }
