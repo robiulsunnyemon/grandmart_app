@@ -14,6 +14,9 @@ import '../../stores/store_list/views/store_list_view.dart';
 //  Bottom Navigation Shell with Wishlist Tab + Badge counter.
 // ════════════════════════════════════════════════════════════════════════════
 
+import '../../../core/services/cart_service.dart';
+import '../../cart/views/cart_view.dart';
+
 class MainWrapperView extends GetView<MainWrapperController> {
   const MainWrapperView({super.key});
 
@@ -26,6 +29,7 @@ class MainWrapperView extends GetView<MainWrapperController> {
       const CategoriesView(),
       const ProductListView(),
       if (AppConfig.showWishlistTab) const WishlistView(),
+      if (AppConfig.showCartTab) const CartView(),
       if (AppConfig.showStoreTab) const StoreListView(),
     ];
 
@@ -66,6 +70,13 @@ class MainWrapperView extends GetView<MainWrapperController> {
                 activeIcon: _WishlistNavIcon(isActive: true),
                 label: 'Wishlist',
               ),
+            // ── Cart Tab with live badge counter ──────────────────────
+            if (AppConfig.showCartTab)
+              BottomNavigationBarItem(
+                icon: _CartNavIcon(isActive: false),
+                activeIcon: _CartNavIcon(isActive: true),
+                label: 'Cart',
+              ),
             if (AppConfig.showStoreTab)
               const BottomNavigationBarItem(
                 icon: Icon(Icons.storefront_outlined),
@@ -104,6 +115,52 @@ class _WishlistNavIcon extends StatelessWidget {
                 padding: const EdgeInsets.all(3),
                 decoration: const BoxDecoration(
                   color: Colors.red,
+                  shape: BoxShape.circle,
+                ),
+                constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
+                child: Text(
+                  count > 99 ? '99+' : '$count',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 9,
+                    fontWeight: FontWeight.bold,
+                    height: 1,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+        ],
+      );
+    });
+  }
+}
+
+// ── Cart Nav Icon with Badge ─────────────────────────────────────────────
+
+class _CartNavIcon extends StatelessWidget {
+  final bool isActive;
+
+  const _CartNavIcon({required this.isActive});
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final count = CartService.to.totalItemCount;
+      return Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Icon(
+            isActive ? Icons.shopping_cart_rounded : Icons.shopping_cart_outlined,
+          ),
+          if (count > 0)
+            Positioned(
+              right: -6,
+              top: -4,
+              child: Container(
+                padding: const EdgeInsets.all(3),
+                decoration: const BoxDecoration(
+                  color: Colors.indigo,
                   shape: BoxShape.circle,
                 ),
                 constraints: const BoxConstraints(minWidth: 16, minHeight: 16),

@@ -34,6 +34,7 @@ class CategoriesView extends GetView<CategoriesController> {
           padding: EdgeInsets.all(R.pagePadding),
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: R.categoryCols,
+            childAspectRatio: 0.82,
             crossAxisSpacing: 12,
             mainAxisSpacing: 16,
           ),

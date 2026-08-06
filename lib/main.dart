@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'app/core/config/app_config.dart';
+import 'app/core/services/cart_service.dart';
 import 'app/core/services/wishlist_service.dart';
 import 'app/core/storage/storage_service.dart';
 import 'app/core/theme/app_theme_controller.dart';
@@ -17,9 +18,9 @@ void main() async {
   // Initialize Theme Controller
   Get.put(AppThemeController());
 
-  // Register WishlistService as permanent singleton
-  // (fetchIds is called inside onInit if user is logged in)
+  // Register WishlistService & CartService as permanent singletons
   Get.put(WishlistService(), permanent: true);
+  Get.put(CartService(), permanent: true);
 
   runApp(const GrandmartApp());
 }
